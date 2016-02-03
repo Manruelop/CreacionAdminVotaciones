@@ -30,4 +30,15 @@ public class QuestionService extends DomainEntity{
 		questionRepository.saveAndFlush(o);
 		return o;
 	}
+
+	public int saveAndFlush(Question question) {
+		Assert.notNull(question);
+		Question q2 = questionRepository.saveAndFlush(question);
+		int questionID = q2.getId();
+		return questionID;
+	}
+
+	public Question findOne(int questionId) {
+		return questionRepository.findOne(questionId);
+	}
 }
