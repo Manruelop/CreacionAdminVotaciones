@@ -22,10 +22,29 @@ public class SurveyService {
 	private QuestionService questionService;
 	
 	@Transactional
-	public Integer save(Survey s){
+	public Integer save(Survey s) {
 		Assert.notNull(s);
-		Survey s1 = surveyRepository.save(s);
+		Date now = new Date(System.currentTimeMillis() - 1000);
+		if (s.getStartDate() == null || s.getEndDate() == null || s.getTitle() == "" || s.getTipo() == null) {
+			throw new IllegalArgumentException("Null");
+		}
+		if (now.after(s.getStartDate()) || now.after(s.getEndDate())) {
+			throw new IllegalArgumentException("Dates future");
+		}
+		if (s.getStartDate().after(s.getEndDate())) {
+			throw new IllegalArgumentException("End must be future than start");
+		}
+		// CAMBIAR POR EL USUARIO LOGEADO Y CENSO POR LA ID DEL CENSO
+		String userName = getUserNameFromOtherSubsystem();
+		s.setUsernameCreator(userName);
+
+		// Se le pone 0 temporalmente. Cuando guardamos despues de crear
+		// las preguntas entonces establecemos la conexion con ceso
+		s.setCensus(0);
+
+		Survey s1 = surveyRepository.saveAndFlush(s);
 		return s1.getId();
+
 	}
 	
 	public Survey findOne(int id){
