@@ -18,10 +18,12 @@
 	">
 
 	<util:list id="converters">
-		<!-- 
-			Add your own converters using entries of the following form: 
-			<bean class="converters.Class1ToClass2" /> 
-		-->
+		<bean class="converters.SurveyToStringConverter" />
+		<bean class="converters.StringToSurveyConverter" />
+		<bean class="converters.QuestionToStringConverter" />
+		<bean class="converters.StringToQuestionConverter" />
+		<bean class="converters.CensusToStringConverter" />
+		<bean class="converters.StringToCensusConverter" />
 	</util:list>
 	
 </beans>
