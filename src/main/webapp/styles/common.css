@@ -8,25 +8,3 @@
  * 
  */
 
-h1{
-	color: blue;
-}
-#.ng-hide{
-	 display: all !important;
-}
-a.ng-scope.ng-hide {
-    display: all !important;
-}
-body.ng-scope{
-	background-color: #fff65;
-}
-
-.error {
-	color: red;
-	font-weight: bolder;
-}
-
-.message {
-	color: red;
-	font-weight: bolder;
-}
