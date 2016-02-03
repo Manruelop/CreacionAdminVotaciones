@@ -61,6 +61,29 @@ public class SurveyService {
 		Assert.notNull(id);
 		return surveyRepository.findOne(id);
 	}
-	
+	// Método de interacción con el subsistema de Visualización
+	public List<Survey> allFinishedSurveys() {
+
+		Date now = new Date(System.currentTimeMillis());
+		List<Survey> res = surveyRepository.allFinishedSurveys(now);
+		return res;
+	}
+
+	public List<Survey> allCreatedSurveys(String usernameCreator) {
+		List<Survey> res = surveyRepository.allCreatedSurveys(usernameCreator);
+		return res;
+	}
+
+	public void delete(int id) {
+		Assert.notNull(id);
+		Date now = new Date(System.currentTimeMillis() - 1000);
+		Survey survey = surveyRepository.findOne(id);
+		if (survey.getStartDate().after(now)) {
+			surveyRepository.delete(id);
+		} else {
+			throw new IllegalArgumentException("Survey is started");
+		}
+	}
+
 	
 }
