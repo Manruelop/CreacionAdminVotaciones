@@ -85,5 +85,28 @@ public class SurveyService {
 		}
 	}
 
+	public Boolean posible(int id) {
+		Assert.notNull(id);
+		Survey s = findOne(id);
+
+		if (s.getCensus() == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public Collection<Survey> allSurveys() {
+		return surveyRepository.findAll();
+	}
+
+	public Survey create() {
+		Survey result;
+		result = new Survey();
+		List<Question> questions = new LinkedList<Question>();
+		result.setQuestions(questions);
+		return result;
+	}
+
 	
 }
