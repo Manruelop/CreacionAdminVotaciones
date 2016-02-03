@@ -1,12 +1,44 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<%--
+ * header.jsp
+ *
+ * Copyright (C) 2014 Universidad de Sevilla
+ * 
+ * The use of this project is hereby constrained to the conditions of the 
+ * TDG Licence, a copy of which you may download from 
+ * http://www.tdg-seville.info/License.html
+ --%>
 
-</body>
-</html>
+<%@page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib prefix="security"
+	uri="http://www.springframework.org/security/tags"%>
+
+<div>
+
+	<ul id="jMenu">
+
+		<!-- Do not forget the "fNiv" class for the first level links !! -->
+		<!-- <li>/a></li>-->
+
+
+
+				<li class="arrow"></li>
+				<li><a class="fNiv" href="vote/list.do"><spring:message
+							code="master.page.list" /></a></li>
+
+
+
+				<li><a href="vote/create.do"><spring:message
+							code="master.page.create">
+						</spring:message></a></li>
+
+				<li><a href="ADMCensus"><spring:message
+							code="master.page.censo">
+						</spring:message></a></li>
+</ul>
+</div>
+<a href="?language=en">En</a> | <a href="?language=es">Es</a>
+
+
