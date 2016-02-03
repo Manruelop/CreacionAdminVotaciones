@@ -108,5 +108,23 @@ public class SurveyService {
 		return result;
 	}
 
+	public void saveAddQuestion(int id, int questionId, boolean esFinal) {
+		Survey survey = surveyRepository.findOne(id);
+		Collection<Question> questions = survey.getQuestions();
+		questions.add(questionService.findOne(questionId));
+		survey.setQuestions(questions);
+		Survey s = surveyRepository.saveAndFlush(survey);
+		if (esFinal) {
+			Integer idCensus = getIdCensusFromOtherSubsystem(s);
+			s.setCensus(idCensus);
+			surveyRepository.saveAndFlush(s);
+		}
+	}
+
+	public void saveFinal(Survey survey) {
+		Assert.notNull(survey);
+		surveyRepository.saveAndFlush(survey);
+	}
+
 	
 }
