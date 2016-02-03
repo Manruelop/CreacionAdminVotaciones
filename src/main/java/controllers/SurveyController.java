@@ -1,130 +1,59 @@
+package controllers;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Collection;
+import java.util.Date;
 
-
-import main.java.Authority;
-import main.java.AuthorityImpl;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.Question;
+import domain.Survey;
+import services.QuestionService;
 import services.SurveyService;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import domain.CheckToken;
-import domain.Survey;
-
-@RestController
+@Controller
 @RequestMapping("/vote")
 public class SurveyController {
 
-	// Servicios
+	// Services ------------------------------------------
+
 	@Autowired
 	private SurveyService surveyService;
-	private static Integer tokenj;
-	// Métodos
 
-	// Método para guardar la votación creada.
-	@RequestMapping(value = "/save", method = RequestMethod.POST, headers = "Content-Type=application/json")
-	public @ResponseBody Survey save(@RequestBody String surveyJson,
-			@CookieValue("user") String user, @CookieValue("token") String token)
-			throws JsonParseException, JsonMappingException, IOException {
-		ObjectMapper mapper = new ObjectMapper();
-		Survey s = mapper.readValue(surveyJson, Survey.class);
+	@Autowired
+	private QuestionService questionService;
 
-		CheckToken isValid = new CheckToken();
-		ObjectMapper checkToken = new ObjectMapper();
-		//Aqui hay que pasar la url de autentificacion
-		isValid = checkToken.readValue(new URL(
-				"http://auth-egc.azurewebsites.net/Help/api/checkToken?token=" + token),
-				domain.CheckToken.class);
-		Assert.isTrue(isValid.getValid());
-		int i = surveyService.save(s);
-		Survey res = surveyService.findOne(i);
-		Authority a = new AuthorityImpl();
-		tokenj= CheckToken.calculateToken(res.getId());
-		a.postKey(String.valueOf(res.getId()),tokenj);
-		
-		return res;
+	// Constructor ---------------------------------------
+	public SurveyController() {
+		super();
 	}
 
-	// Método para guardar la votación con el censo. Relación con
-	// CREACION/ADMINISTRACION DE CENSO.
-	@RequestMapping(value = "/saveCensus", method = RequestMethod.GET)
-	public @ResponseBody void saveCensus(@RequestParam Integer surveyId,
-			@RequestParam Integer censusId) throws JsonParseException,
-			JsonMappingException, IOException {
-		surveyService.addCensus(surveyId, censusId);
+	// Listing -------------------------------------------
+
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
+	public ModelAndView list() {
+		ModelAndView result;
+		Collection<Survey> surveis;
+
+		surveis = surveyService.allSurveys();
+		Date now = new Date(System.currentTimeMillis() - 1000);
+		result = new ModelAndView("vote/list");
+		result.addObject("surveis", surveis);
+		result.addObject("hoy", now);
+
+		return result;
 	}
 
-	@RequestMapping(value = "/getcookies", method = RequestMethod.GET)
-	public @ResponseBody String cookie(@CookieValue("user") String user,
-			@CookieValue("token") String token) {
-		return "{\"user\":\"" + user + "\", \"token\":\"" + token + "\"}";
-	}
+	// Creation ------------------------------------------
 
-	// Método que devuelve la lista de votaciones creadas para editarlas.
-	// Relación con CREACION/ADMINISTRACION DE CENSO.
-	@RequestMapping(value = "/mine", method = RequestMethod.GET)
-	public Collection<Survey> findAllSurveyByCreator(
-			@CookieValue("user") String user, @CookieValue("token") String token) 
-			throws JsonParseException, JsonMappingException, IOException{
-		String creator = user;
-		CheckToken isValid = new CheckToken();
-		ObjectMapper checkToken = new ObjectMapper();
-		isValid = checkToken.readValue(new URL(
-				"http://auth-egc.azurewebsites.net/Help/api/checkToken?token=" + token),
-				domain.CheckToken.class);
-		Assert.isTrue(isValid.getValid());
-		Collection<Survey> res = surveyService.allCreatedSurveys(creator);
-		return res;
-	}
-
-	// Método que devuelve la lista de votaciones finalizadas. Relación con
-	// VISUALIZACION.
-	@RequestMapping(value = "/finishedSurveys", method = RequestMethod.GET)
-	public Collection<Survey> findAllfinishedSurveys() {
-		Collection<Survey> res = surveyService.allFinishedSurveys();
-		return res;
-	}
-	
-	// Método que devuelve la lista completa de finalizadas. Relación con
-	// VISUALIZACION.
-	@RequestMapping(value = "/allSurveys", method = RequestMethod.GET)
-	public Collection<Survey> findAllSurveys() {
-		Collection<Survey> res = surveyService.allSurveys();
-		return res;
-	}
-
-	// Método que borra una votación tras comprobar que no tiene censo
-	// relacionado.
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public void delete(@RequestParam int id) {
-		surveyService.delete(id);
-	}
-
-	// Método devuelve una survey para realizar una votación. Relación con
-	// CABINA DE VOTACION
-	@RequestMapping(value = "/survey", method = RequestMethod.GET)
-	public Survey getSurvey(@RequestParam int id) {
-		Survey s = surveyService.findOne(id);
-		return s;
-	}
-	
-	//crear una votacion
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
@@ -133,10 +62,172 @@ public class SurveyController {
 		survey = surveyService.create();
 
 		result = new ModelAndView("vote/create");
-
 		result.addObject("survey", survey);
-		
+		result.addObject("actionURL", "vote/create.do");
 
 		return result;
 	}
+
+	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "addQuestion")
+	public ModelAndView addQuestio(@Valid Survey survey, BindingResult bindingResult) {
+		ModelAndView result;
+		Assert.notNull(survey);
+		Date now = new Date(System.currentTimeMillis() - 1000);
+		if (bindingResult.hasErrors() || survey.getStartDate() == null || survey.getEndDate() == null
+				|| survey.getTitle() == "" || survey.getTipo() == null || now.after(survey.getStartDate())
+				|| now.after(survey.getEndDate()) || survey.getStartDate().after(survey.getEndDate())) {
+			result = new ModelAndView("vote/create");
+			result.addObject("actionURL", "vote/create.do");
+			result.addObject("survey", survey);
+			if (survey.getStartDate() == null || survey.getEndDate() == null || survey.getTitle() == ""
+					|| survey.getTipo() == null) {
+				result.addObject("message", "survey.fields.empty");
+			}
+			if (now.after(survey.getStartDate()) || now.after(survey.getEndDate())) {
+				result.addObject("message", "survey.dates.future");
+			}
+			if (survey.getStartDate().after(survey.getEndDate())) {
+				result.addObject("message", "survey.start.end");
+			}
+		} else {
+			try {
+				Integer s2 = surveyService.save(survey);
+				result = new ModelAndView("redirect:/vote/addQuestion.do");
+				result.addObject("surveyId", s2);
+			} catch (Throwable oops) {
+				result = new ModelAndView("/vote/create");
+				result.addObject("message", "survey.commit.error");
+				result.addObject("survey", survey);
+				if (survey.getStartDate() == null || survey.getEndDate() == null || survey.getTitle() == ""
+						|| survey.getTipo() == null) {
+					result.addObject("message", "survey.fields.empty");
+				}
+				if (survey.getStartDate() == null || survey.getEndDate() == null || survey.getTitle() == ""
+						|| survey.getTipo() == null) {
+					result.addObject("message", "survey.fields.empty");
+				}
+				if (now.after(survey.getStartDate()) || now.after(survey.getEndDate())) {
+					result.addObject("message", "survey.dates.future");
+				}
+				if (survey.getStartDate().after(survey.getEndDate())) {
+					result.addObject("message", "survey.start.end");
+				}
+			}
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/addQuestion", method = RequestMethod.GET)
+	public ModelAndView addQuestion(Integer surveyId) {
+		ModelAndView result;
+		Survey survey = surveyService.findOne(surveyId);
+		Question question = questionService.create(surveyId);
+		question.setSurveyId(surveyId);
+		result = new ModelAndView("vote/addQuestion");
+		result.addObject("actionURL", "vote/addQuestion.do");
+		result.addObject("survey", survey);
+		result.addObject("questio", question);
+		return result;
+	}
+
+	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "addQuestion")
+	public ModelAndView addAnotherQuestion(Question questio, BindingResult bindingResult) {
+		ModelAndView result;
+		Assert.notNull(questio);
+		Survey survey = surveyService.findOne(questio.getSurveyId());
+		if (bindingResult.hasErrors()) {
+			result = new ModelAndView("vote/addQuestion");
+			result.addObject("actionURL", "vote/addQuestion.do");
+			result.addObject("surveyId", survey.getId());
+			result.addObject("questio", questio);
+		} else {
+			try {
+				int idQuestion = questionService.saveAndFlush(questio);
+				surveyService.saveAddQuestion(survey.getId(), idQuestion, false);
+				result = new ModelAndView("vote/addQuestion");
+				Question question = questionService.create(survey.getId());
+				question.setSurveyId(survey.getId());
+				result.addObject("survey", survey);
+				result.addObject("questio", question);
+
+			} catch (Throwable oops) {
+				result = new ModelAndView("vote/addQuestion");
+				result.addObject("message", "survey.commit.error");
+				result.addObject("actionURL", "vote/addQuestion.do");
+				result.addObject("survey", survey.getId());
+				result.addObject("questio", questio);
+			}
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "save")
+	public ModelAndView saveSurvey(Question questio, BindingResult bindingResult) {
+		ModelAndView result;
+		Assert.notNull(questio);
+		Survey survey = surveyService.findOne(questio.getSurveyId());
+		if (bindingResult.hasErrors()) {
+			result = new ModelAndView("vote/addQuestion");
+			result.addObject("actionURL", "vote/addQuestion.do");
+			result.addObject("survey", survey.getId());
+			result.addObject("questio", questio);
+		} else {
+			try {
+				int idQuestion = questionService.saveAndFlush(questio);
+				surveyService.saveAddQuestion(survey.getId(), idQuestion, true);
+				result = new ModelAndView("redirect:/vote/list.do");
+			} catch (Throwable oops) {
+				result = new ModelAndView("vote/addQuestion");
+				result.addObject("message", "survey.commit.error");
+				result.addObject("actionURL", "vote/addQuestion.do");
+				result.addObject("survey", survey.getId());
+				result.addObject("questio", questio);
+			}
+		}
+		return result;
+	}
+
+	@RequestMapping(value = "/cancelSurvey", method = RequestMethod.GET)
+	public ModelAndView cancelSurvey(@RequestParam int surveyId) {
+		ModelAndView result;
+		Assert.notNull(surveyId);
+		try {
+			surveyService.delete(surveyId);
+			result = new ModelAndView("redirect:/vote/list.do");
+		} catch (Throwable oops) {
+			result = new ModelAndView("vote/addQuestion");
+			result.addObject("message", "survey.commit.error");
+			result.addObject("actionURL", "vote/addQuestion.do");
+			result.addObject("survey", surveyId);
+		}
+		return result;
+	}
+
+	// Details ----------------------------------------------
+
+	@RequestMapping(value = "/details", method = RequestMethod.GET)
+	public ModelAndView details(@RequestParam int surveyId) {
+		ModelAndView result;
+		Survey survey;
+		survey = surveyService.findOne(surveyId);
+		Assert.notNull(survey);
+		result = new ModelAndView("vote/details");
+		result.addObject("survey", survey);
+		return result;
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.GET)
+	public ModelAndView delete(@RequestParam int surveyId) {
+		ModelAndView result;
+		try {
+			surveyService.delete(surveyId);
+			result = new ModelAndView("redirect:/vote/list.do");
+		} catch (Throwable oops) {
+			result = new ModelAndView("vote/list");
+			result.addObject("message", "survey.error.dates");
+		}
+
+		return result;
+	}
+
 }
