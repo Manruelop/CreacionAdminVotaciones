@@ -128,5 +128,5 @@ public class Survey extends DomainEntity implements Serializable {
 				+ ", startDate=" + startDate + ", endDate=" + endDate
 				+ ", census=" + census + ", questions=" + questions + "]";
 	}
-
+	
 }
