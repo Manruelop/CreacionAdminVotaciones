@@ -6,6 +6,7 @@ public class Question extends DomainEntity{
 	
 	//Attributes
 	private String text;
+	private Integer surveyId;
 	
 	public Question(){
 		super();
@@ -21,6 +22,14 @@ public class Question extends DomainEntity{
 
 	public void setText(String text){
 		this.text=text;
+	}
+	
+	public Integer getSurveyId(){
+		return surveyId;
+	}
+	
+	public void setSurveyId(Integer id){
+		surveyId=id;
 	}
 
 	@Override
