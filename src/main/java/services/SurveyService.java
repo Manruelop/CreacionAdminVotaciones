@@ -46,6 +46,21 @@ public class SurveyService {
 		return s1.getId();
 
 	}
+
+	// Metodo para obtener la id del censo. Tenemos que enviarle la survey.
+	private Integer getIdCensusFromOtherSubsystem(Survey survey) {
+		return 1;
+	}
+
+	// Metodo para obtener el nombre del usuario
+	private String getUserNameFromOtherSubsystem() {
+		return "User1";
+	}
+
+	public Survey findOne(int id) {
+		Assert.notNull(id);
+		return surveyRepository.findOne(id);
+	}
 	
 	
 }
