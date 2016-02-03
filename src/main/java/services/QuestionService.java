@@ -16,8 +16,18 @@ public class QuestionService extends DomainEntity{
 	private QuestionRepository questionRepository;
 
 	//Methods
-	public Question create(){
+		public Question create(Integer surveyId){
 		Question o = new Question();
+		o.setSurveyId(surveyId);
+		questionRepository.saveAndFlush(o);
+		return o;
+	}
+
+	public Question create(String question) {
+		Question o = new Question();
+		o.setText(question);
+		
+		questionRepository.saveAndFlush(o);
 		return o;
 	}
 }
