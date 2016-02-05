@@ -73,9 +73,12 @@ public class SurveyController {
 		ModelAndView result;
 		Assert.notNull(survey);
 		Date now = new Date(System.currentTimeMillis() - 1000);
+		System.out.println(survey.getStartDate());
+		System.out.println(survey.getEndDate());
 		if (bindingResult.hasErrors() || survey.getStartDate() == null || survey.getEndDate() == null
 				|| survey.getTitle() == "" || survey.getTipo() == null || now.after(survey.getStartDate())
 				|| now.after(survey.getEndDate()) || survey.getStartDate().after(survey.getEndDate())) {
+			System.out.println(bindingResult.toString());
 			result = new ModelAndView("vote/create");
 			result.addObject("actionURL", "vote/create.do");
 			result.addObject("survey", survey);

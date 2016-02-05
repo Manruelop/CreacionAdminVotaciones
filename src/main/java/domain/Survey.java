@@ -58,7 +58,7 @@ public class Survey extends DomainEntity implements Serializable {
 		this.description = description;
 	}
 
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -67,7 +67,7 @@ public class Survey extends DomainEntity implements Serializable {
 		this.startDate = startDate;
 	}
 
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -105,7 +105,6 @@ public class Survey extends DomainEntity implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@NotEmpty
 	public Collection<Question> getQuestions() {
 		return questions;
 	}
