@@ -18,7 +18,7 @@
 	">
 
 	<util:list id="converters">
-		<bean class="converters.SurveyToStringConverter" />
+	<bean class="converters.SurveyToStringConverter" />
 		<bean class="converters.StringToSurveyConverter" />
 		<bean class="converters.QuestionToStringConverter" />
 		<bean class="converters.StringToQuestionConverter" />
