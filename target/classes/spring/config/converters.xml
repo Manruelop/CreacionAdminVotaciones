@@ -26,5 +26,4 @@
 		<bean class="converters.StringToCensusConverter" />
 	</util:list>
 	
-
 </beans>
