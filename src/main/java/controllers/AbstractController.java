@@ -27,7 +27,6 @@ public class AbstractController {
 	* @param oops La expcepción que ha sido lanzada
 	* @return Este método devuelve el modelo de vista de error por excepción.
 	*/
-
 	@ExceptionHandler(Throwable.class)
 	public ModelAndView panic(Throwable oops) {
 		ModelAndView result;
