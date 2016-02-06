@@ -77,6 +77,10 @@
 		class="org.springframework.orm.jpa.support.OpenEntityManagerInViewInterceptor" />
 
 	<mvc:interceptors>
+	<mvc:interceptor>
+			<mvc:mapping path="/**/*.json" />
+			<ref bean="openEntityManagerInViewInterceptor" />
+		</mvc:interceptor>
 		<mvc:interceptor>
 			<mvc:mapping path="/**/*.do" />
 			<ref bean="openEntityManagerInViewInterceptor" />

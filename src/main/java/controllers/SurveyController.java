@@ -12,19 +12,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.QuestionService;
+import services.SurveyService;
 import domain.CheckToken;
 import domain.Question;
 import domain.Survey;
-import services.QuestionService;
-import services.SurveyService;
 
 @Controller
+@RestController
 @RequestMapping("/vote")
 public class SurveyController {
 
@@ -251,6 +252,14 @@ public class SurveyController {
 		}
 
 		return result;
+	}
+	
+	// Método devuelve una survey para realizar una votación. Relación con
+	// CABINA DE VOTACION
+	@RequestMapping(value = "/survey", method = RequestMethod.GET)
+	public Survey getSurvey(@RequestParam int id) {
+		Survey s = surveyService.findOne(id);
+		return s;
 	}
 
 }
