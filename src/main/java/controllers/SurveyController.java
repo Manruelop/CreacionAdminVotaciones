@@ -5,15 +5,20 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import main.java.Authority;
+import main.java.AuthorityImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import domain.CheckToken;
 import domain.Question;
 import domain.Survey;
 import services.QuestionService;
@@ -42,8 +47,12 @@ public class SurveyController {
 	public ModelAndView list() {
 		ModelAndView result;
 		Collection<Survey> surveis;
+//		if(user == null){
 
-		surveis = surveyService.allSurveys();
+//		surveis = surveyService.allSurveys();
+//		}else{
+     	surveis = surveyService.allCreatedSurveys("Test1");
+//		}
 		Date now = new Date(System.currentTimeMillis() - 1000);
 		result = new ModelAndView("vote/list");
 		result.addObject("surveis", surveis);
@@ -178,6 +187,17 @@ public class SurveyController {
 			try {
 				int idQuestion = questionService.saveAndFlush(questio);
 				surveyService.saveAddQuestion(survey.getId(), idQuestion, true);
+				//Integracion con Verificación.
+				Authority a = new AuthorityImpl();
+				Integer token = CheckToken.calculateToken(survey.getId());
+				System.out.println(survey.getId());
+				a.postKey(String.valueOf(survey.getId()),token);
+				System.out.println(token);
+				//TODO integracion con censo
+				
+				//TODO integracion con deliberaciones
+				//$http.get("/Deliberations/customer/createThreadFromVotacion.do?title="+survey.getTitle()+"surveyId="+survey.getId());
+
 				result = new ModelAndView("redirect:/vote/list.do");
 			} catch (Throwable oops) {
 				result = new ModelAndView("vote/addQuestion");

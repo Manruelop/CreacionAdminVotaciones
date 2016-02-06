@@ -56,7 +56,7 @@ public class SurveyService {
 
 	// Metodo para obtener el nombre del usuario
 	private String getUserNameFromOtherSubsystem() {
-		return "User1";
+		return "Test1";
 	}
 
 	public Survey findOne(int id) {
