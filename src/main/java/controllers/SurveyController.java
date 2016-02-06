@@ -253,13 +253,21 @@ public class SurveyController {
 
 		return result;
 	}
-	
-	// Método devuelve una survey para realizar una votación. Relación con
-	// CABINA DE VOTACION
 	@RequestMapping(value = "/survey", method = RequestMethod.GET)
 	public Survey getSurvey(@RequestParam int id) {
-		Survey s = surveyService.findOne(id);
-		return s;
+		Survey result = surveyService.findOne(id);
+		return result;
+	}
+	@RequestMapping(value = "/finishedSurveys", method = RequestMethod.GET)
+	public Collection<Survey> findAllfinishedSurveys() {
+		Collection<Survey> result = surveyService.allFinishedSurveys();
+		return result;
+	}
+	
+	@RequestMapping(value = "/allSurveys", method = RequestMethod.GET)
+	public Collection<Survey> findAllSurveys() {
+		Collection<Survey> result = surveyService.allSurveys();
+		return result;
 	}
 
 }
