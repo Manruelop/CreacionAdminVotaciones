@@ -15,12 +15,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
-
+/**
+* @Class AbstractController
+* @classDec La clase contiene el controlador que redirecciona a la página de error cuando se cometen excepciones en el código
+*/
 @Controller
 public class AbstractController {
 	
 	// Panic handler ----------------------------------------------------------
-	
+	/**
+	* @param oops La expcepción que ha sido lanzada
+	* @return Este método devuelve el modelo de vista de error por excepción.
+	*/
 	@ExceptionHandler(Throwable.class)
 	public ModelAndView panic(Throwable oops) {
 		ModelAndView result;

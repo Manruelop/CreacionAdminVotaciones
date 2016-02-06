@@ -24,6 +24,12 @@ import domain.CheckToken;
 import domain.Question;
 import domain.Survey;
 
+/**
+ * @Class SurveyController
+ * @classDec La clase contiene el controlador que maneja las acciones de las
+ *           votaciones, crear, añadir preguntas, borrar, y la api para los
+ *           otros módulos.
+ */
 @Controller
 @RestController
 @RequestMapping("/vote")
@@ -37,23 +43,29 @@ public class SurveyController {
 	@Autowired
 	private QuestionService questionService;
 
+	/**
+	 * @return Constructor del Controlador.
+	 */
 	// Constructor ---------------------------------------
 	public SurveyController() {
 		super();
 	}
 
 	// Listing -------------------------------------------
-
+	/**
+	 * @return Este método devuelve el modelo de vista con el listado de
+	 *         votaciones.
+	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public ModelAndView list() {
 		ModelAndView result;
 		Collection<Survey> surveis;
-//		if(user == null){
+		// if(user == null){
 
-//		surveis = surveyService.allSurveys();
-//		}else{
-     	surveis = surveyService.allCreatedSurveys("Test1");
-//		}
+		// surveis = surveyService.allSurveys();
+		// }else{
+		surveis = surveyService.allCreatedSurveys("Test1");
+		// }
 		Date now = new Date(System.currentTimeMillis() - 1000);
 		result = new ModelAndView("vote/list");
 		result.addObject("surveis", surveis);
@@ -63,7 +75,12 @@ public class SurveyController {
 	}
 
 	// Creation ------------------------------------------
-
+	/**
+	 * @return Este método devuelve el modelo de vista para el primer paso de la
+	 *         votacion. El cual consiste en elegir el nombre, la descripciñon,
+	 *         el tipo de censo y el intervalo de fecha de inicio y finalización
+	 *         de la votación.
+	 */
 	@RequestMapping(value = "/create", method = RequestMethod.GET)
 	public ModelAndView create() {
 		ModelAndView result;
@@ -78,6 +95,18 @@ public class SurveyController {
 		return result;
 	}
 
+	/**
+	 * @param survey
+	 *            La votación que se ha creado en el primer paso.
+	 * @param bindingResult
+	 *            Este parámetro nos indica si hay algun error con los datos
+	 *            introducidos comparandolos con las restricciones escritas en
+	 *            el dominio.
+	 * @return Este método comprueba si la votacion es válida y en caso negativo
+	 *         volvemos a la vista de creación de la votación para poder editar
+	 *         los campos erróneos. En caso afirmativo, procederemos a la
+	 *         siguiente vista la cual es para añadir preguntas a la votación.
+	 */
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "addQuestion")
 	public ModelAndView addQuestio(@Valid Survey survey, BindingResult bindingResult) {
 		ModelAndView result;
@@ -130,6 +159,12 @@ public class SurveyController {
 		return result;
 	}
 
+	/**
+	 * @param surveyId
+	 *            La id votación que a la que se le añadiran preguntas.
+	 * @return Este método devuelve la vista en la que se podrán añadir
+	 *         preguntas a la votación.
+	 */
 	@RequestMapping(value = "/addQuestion", method = RequestMethod.GET)
 	public ModelAndView addQuestion(Integer surveyId) {
 		ModelAndView result;
@@ -143,8 +178,18 @@ public class SurveyController {
 		return result;
 	}
 
+	/**
+	 * @param questio
+	 *            La pregunta introducida de la votación
+	 * @param bindingResult
+	 *            Este parámetro nos indica si hay algun error con los datos
+	 *            introducidos comparandolos con las restricciones escritas en
+	 *            el dominio.
+	 * @return Este método añade la pregunta a la votación siempre que no esté
+	 *         en blanco y vuelve a la misma vista para añadir otra pregunta.
+	 */
 	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "addQuestion")
-	public ModelAndView addAnotherQuestion(Question questio, BindingResult bindingResult) {
+	public ModelAndView addAnotherQuestion(@Valid Question questio, BindingResult bindingResult) {
 		ModelAndView result;
 		Assert.notNull(questio);
 		Survey survey = surveyService.findOne(questio.getSurveyId());
@@ -174,6 +219,20 @@ public class SurveyController {
 		return result;
 	}
 
+	/**
+	 * @param questio
+	 *            La pregunta introducida de la votación
+	 * @param bindingResult
+	 *            Este parámetro nos indica si hay algun error con los datos
+	 *            introducidos comparandolos con las restricciones escritas en
+	 *            el dominio.
+	 * @return Este método añade la pregunta a la votación siempre que no esté
+	 *         en blanco y guarda del todo la votación. Comprueba que el usuario
+	 *         este en el sistema en la integración con Verificación. Establece
+	 *         la conexión con Censo para crear el censo de la votacion y
+	 *         Establece conexión con deliberaciones para crear el hilo de las
+	 *         deliberaciones.
+	 */
 	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "save")
 	public ModelAndView saveSurvey(Question questio, BindingResult bindingResult) {
 		ModelAndView result;
@@ -188,16 +247,16 @@ public class SurveyController {
 			try {
 				int idQuestion = questionService.saveAndFlush(questio);
 				surveyService.saveAddQuestion(survey.getId(), idQuestion, true);
-				//Integracion con Verificación.
+				// Integracion con Verificación.
 				Authority a = new AuthorityImpl();
 				Integer token = CheckToken.calculateToken(survey.getId());
 				System.out.println(survey.getId());
-				a.postKey(String.valueOf(survey.getId()),token);
+				a.postKey(String.valueOf(survey.getId()), token);
 				System.out.println(token);
-				//TODO integracion con censo
-				
-				//TODO integracion con deliberaciones
-				//$http.get("/Deliberations/customer/createThreadFromVotacion.do?title="+survey.getTitle()+"surveyId="+survey.getId());
+				// TODO integracion con censo
+
+				// TODO integracion con deliberaciones
+				// $http.get("/Deliberations/customer/createThreadFromVotacion.do?title="+survey.getTitle()+"surveyId="+survey.getId());
 
 				result = new ModelAndView("redirect:/vote/list.do");
 			} catch (Throwable oops) {
@@ -211,6 +270,13 @@ public class SurveyController {
 		return result;
 	}
 
+	/**
+	 * @param surveyId
+	 *            ID de la votación a borrar
+	 * @return Este método cancela la votación si se decide que no se terminarán
+	 *         de rellenar los datos del formulario de creación(Una vez que se
+	 *         pasa a añadirle las preguntas).
+	 */
 	@RequestMapping(value = "/cancelSurvey", method = RequestMethod.GET)
 	public ModelAndView cancelSurvey(@RequestParam int surveyId) {
 		ModelAndView result;
@@ -229,6 +295,11 @@ public class SurveyController {
 
 	// Details ----------------------------------------------
 
+	/**
+	 * @param surveyId
+	 *            ID de la votación de la que se desea ver los detalles
+	 * @return Este método muestra la vista de los detalles de la votacion.
+	 */
 	@RequestMapping(value = "/details", method = RequestMethod.GET)
 	public ModelAndView details(@RequestParam int surveyId) {
 		ModelAndView result;
@@ -240,6 +311,11 @@ public class SurveyController {
 		return result;
 	}
 
+	/**
+	 * @param surveyId
+	 *            ID de la votación de la que se desea ver los detalles
+	 * @return Este método muestra la vista de los detalles de la votacion.
+	 */
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
 	public ModelAndView delete(@RequestParam int surveyId) {
 		ModelAndView result;
@@ -253,17 +329,32 @@ public class SurveyController {
 
 		return result;
 	}
+
+	/**
+	 * @param surveyId
+	 *            ID de la votación de la que se desea ver los detalles
+	 * @return Este método forma parte de la API de integración. Devuelve un
+	 *         JSON con los datos de la votación
+	 */
 	@RequestMapping(value = "/survey", method = RequestMethod.GET)
 	public Survey getSurvey(@RequestParam int id) {
 		Survey result = surveyService.findOne(id);
 		return result;
 	}
+
+	/**
+	 * @return Este método forma parte de la API de integración. Devuelve un
+	 *         JSON con los datos de todas la votación finalizadas.
+	 */
 	@RequestMapping(value = "/finishedSurveys", method = RequestMethod.GET)
 	public Collection<Survey> findAllfinishedSurveys() {
 		Collection<Survey> result = surveyService.allFinishedSurveys();
 		return result;
 	}
-	
+	/**
+	 * @return Este método forma parte de la API de integración. Devuelve un
+	 *         JSON con los datos de todas la votaciónes.
+	 */
 	@RequestMapping(value = "/allSurveys", method = RequestMethod.GET)
 	public Collection<Survey> findAllSurveys() {
 		Collection<Survey> result = surveyService.allSurveys();

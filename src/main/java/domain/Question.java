@@ -1,41 +1,46 @@
 package domain;
 
 import javax.persistence.Entity;
+
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
-public class Question extends DomainEntity{
-	
-	//Attributes
+public class Question extends DomainEntity {
+
+	// Attributes
 	private String text;
 	private Integer surveyId;
-	
-	public Question(){
+
+	public Question() {
 		super();
-		text="";
+		text = "";
 	}
-	//Methods
-	public Question(Survey s){
-		text="";
+
+	// Methods
+	public Question(Survey s) {
+		text = "";
 	}
-	public String getText(){
+
+	@NotBlank
+	public String getText() {
 		return text;
 	}
 
-	public void setText(String text){
-		this.text=text;
+	public void setText(String text) {
+		this.text = text;
 	}
-	
-	public Integer getSurveyId(){
+
+	public Integer getSurveyId() {
 		return surveyId;
 	}
-	
-	public void setSurveyId(Integer id){
-		surveyId=id;
+
+	public void setSurveyId(Integer id) {
+		surveyId = id;
 	}
 
 	@Override
 	public String toString() {
 		return "Question [text=" + text + "]";
 	}
-		
-	
+
 }
