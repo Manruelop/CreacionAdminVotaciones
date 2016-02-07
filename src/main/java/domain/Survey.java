@@ -96,7 +96,7 @@ public class Survey extends DomainEntity implements Serializable {
 		this.tipo = tipo;
 	}
 
-	//Indica si es de censo abierto o cerrado, 1 censo abierto 0 censo cerrado
+	//Indica la id del censo relacionado a la votacion
 
 	public Integer getCensus() {
 		return census;
