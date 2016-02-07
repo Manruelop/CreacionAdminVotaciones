@@ -3,11 +3,6 @@ package controllers;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.validation.Valid;
-
-import main.java.Authority;
-import main.java.AuthorityImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -18,11 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import services.QuestionService;
-import services.SurveyService;
 import domain.CheckToken;
 import domain.Question;
 import domain.Survey;
+import main.java.Authority;
+import main.java.AuthorityImpl;
+import services.QuestionService;
+import services.SurveyService;
+import services.requestsHttp;
 
 /**
  * @Class SurveyController
@@ -42,6 +40,8 @@ public class SurveyController {
 
 	@Autowired
 	private QuestionService questionService;
+
+	private requestsHttp httpRequest = new requestsHttp();
 
 	/**
 	 * @return Constructor del Controlador.
@@ -108,7 +108,7 @@ public class SurveyController {
 	 *         siguiente vista la cual es para añadir preguntas a la votación.
 	 */
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "addQuestion")
-	public ModelAndView addQuestio(@Valid Survey survey, BindingResult bindingResult) {
+	public ModelAndView addQuestio(Survey survey, BindingResult bindingResult) {
 		ModelAndView result;
 		Assert.notNull(survey);
 		Date now = new Date(System.currentTimeMillis() - 1000);
@@ -189,7 +189,7 @@ public class SurveyController {
 	 *         en blanco y vuelve a la misma vista para añadir otra pregunta.
 	 */
 	@RequestMapping(value = "/addQuestion", method = RequestMethod.POST, params = "addQuestion")
-	public ModelAndView addAnotherQuestion(@Valid Question questio, BindingResult bindingResult) {
+	public ModelAndView addAnotherQuestion(Question questio, BindingResult bindingResult) {
 		ModelAndView result;
 		Assert.notNull(questio);
 		Survey survey = surveyService.findOne(questio.getSurveyId());
@@ -246,15 +246,18 @@ public class SurveyController {
 		} else {
 			try {
 				int idQuestion = questionService.saveAndFlush(questio);
-				surveyService.saveAddQuestion(survey.getId(), idQuestion, true);
+				Survey s1 = surveyService.saveAddQuestion(survey.getId(), idQuestion, true);
 				// Integracion con Verificación.
 				Authority a = new AuthorityImpl();
 				Integer token = CheckToken.calculateToken(survey.getId());
-				System.out.println(survey.getId());
+				System.out.println("Id Votacion: " + survey.getId());
 				a.postKey(String.valueOf(survey.getId()), token);
-				System.out.println(token);
+				System.out.println("Token: " + token);
 				// TODO integracion con censo
-				
+				Integer censoId = httpRequest.generaPeticion(survey.getId(), survey.getStartDate(), survey.getEndDate(),
+						survey.getTitle(), survey.getTipo());
+				surveyService.addCensus(censoId, s1.getId());
+
 				// TODO integracion con deliberaciones
 				// $http.get("/Deliberations/customer/createThreadFromVotacion.do?title="+survey.getTitle()+"surveyId="+survey.getId());
 
@@ -263,7 +266,7 @@ public class SurveyController {
 				result = new ModelAndView("vote/addQuestion");
 				result.addObject("message", "survey.commit.error");
 				result.addObject("actionURL", "vote/addQuestion.do");
-				result.addObject("survey", survey.getId());
+				result.addObject("survey", survey);
 				result.addObject("questio", questio);
 			}
 		}
@@ -351,6 +354,7 @@ public class SurveyController {
 		Collection<Survey> result = surveyService.allFinishedSurveys();
 		return result;
 	}
+
 	/**
 	 * @return Este método forma parte de la API de integración. Devuelve un
 	 *         JSON con los datos de todas la votaciónes.

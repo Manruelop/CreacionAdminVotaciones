@@ -65,7 +65,7 @@ public class Survey extends DomainEntity implements Serializable {
 	// con @DateTimeFormat especificamos el formato para la fecha que se va a
 	// almacenar en la base de datos del sistema.
 
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -76,7 +76,7 @@ public class Survey extends DomainEntity implements Serializable {
 
 	// Fecha fin de la votación
 
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	public Date getEndDate() {
 		return endDate;
 	}

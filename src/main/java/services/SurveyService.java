@@ -124,7 +124,7 @@ public class SurveyService {
 	// Metodo que recupera un survey y le modifica la colección de question
 	// añadiendole una nueva question, que se recupera mediante la id
 	//que se le pasa por parámetro.
-	public void saveAddQuestion(int id, int questionId, boolean esFinal) {
+	public Survey saveAddQuestion(int id, int questionId, boolean esFinal) {
 		Survey survey = surveyRepository.findOne(id);
 		Collection<Question> questions = survey.getQuestions();
 		questions.add(questionService.findOne(questionId));
@@ -133,14 +133,22 @@ public class SurveyService {
 		if (esFinal) {
 			Integer idCensus = getIdCensusFromOtherSubsystem(s);
 			s.setCensus(idCensus);
-			surveyRepository.saveAndFlush(s);
+			Survey s2 = surveyRepository.saveAndFlush(s);
+			s=s2;
 		}
+		return s;
 	}
 
 	// Metodo que persiste una survey en la base de datos.
 	public void saveFinal(Survey survey) {
 		Assert.notNull(survey);
 		surveyRepository.saveAndFlush(survey);
+	}
+
+	public void addCensus(Integer censoId, Integer surveyId) {
+		Survey s = surveyRepository.findOne(surveyId);
+		s.setCensus(censoId);
+		saveFinal(s);
 	}
 
 	
