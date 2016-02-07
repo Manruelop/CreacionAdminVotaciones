@@ -10,11 +10,16 @@ public class Question extends DomainEntity{
 	public Question(){
 		super();
 		text="";
-	}
-	//Methods
+	}	
+
 	public Question(Survey s){
 		text="";
 	}
+
+	//Methods
+
+	//Este atributo indica el texto que forma la question.
+
 	public String getText(){
 		return text;
 	}
@@ -22,6 +27,8 @@ public class Question extends DomainEntity{
 	public void setText(String text){
 		this.text=text;
 	}
+
+	//Método toString para la representación como cadena de la clase entidad.
 
 	@Override
 	public String toString() {
