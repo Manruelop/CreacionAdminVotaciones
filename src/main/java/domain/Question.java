@@ -13,6 +13,7 @@ public class Question extends DomainEntity {
 
 	public Question() {
 		super();
+<<<<<<< HEAD
 		text = "";
 	}
 
@@ -21,13 +22,24 @@ public class Question extends DomainEntity {
 		text = "";
 	}
 
-	// Este atributo indica el texto que forma la question.
 	@NotBlank
 	public String getText() {
-		return text;
+=======
+		text="";
+	}	
+
+	public Question(Survey s){
+		text="";
 	}
 
-	// Methods
+	//Methods
+
+	//Este atributo indica el texto que forma la question.
+
+	public String getText(){
+>>>>>>> comments
+		return text;
+	}
 
 	public void setText(String text) {
 		this.text = text;
@@ -41,7 +53,7 @@ public class Question extends DomainEntity {
 		surveyId = id;
 	}
 
-	// Método toString para la representación como cadena de la clase entidad.
+	//Método toString para la representación como cadena de la clase entidad.
 
 	@Override
 	public String toString() {
