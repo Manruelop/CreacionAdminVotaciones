@@ -39,6 +39,9 @@ public class Survey extends DomainEntity implements Serializable {
 	}
 
 	// Methods
+
+	//Título de la votación
+	
 	@NotBlank
 	@Length(min = 5, max = 100, message = "The field must be between 5 and 10 characters")
 	public String getTitle() {
@@ -49,6 +52,7 @@ public class Survey extends DomainEntity implements Serializable {
 		this.title = title;
 	}
 
+	//Descripción de la votación
 	@NotBlank
 	public String getDescription() {
 		return description;
@@ -58,6 +62,10 @@ public class Survey extends DomainEntity implements Serializable {
 		this.description = description;
 	}
 
+	//Fecha de creación de la votación
+	//con @DateTimeFormat especificamos el formato para la fecha que se va a
+	//almacenar en la base de datos del sistema.
+	
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	public Date getStartDate() {
 		return startDate;
@@ -66,6 +74,8 @@ public class Survey extends DomainEntity implements Serializable {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
+	//Fecha fin de la votación 
 
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
 	public Date getEndDate() {
@@ -76,6 +86,8 @@ public class Survey extends DomainEntity implements Serializable {
 		this.endDate = endDate;
 	}
 
+	//El atributo tipo indica de que tipo de votación se trata.
+
 	public String getTipo() {
 		return tipo;
 	}
@@ -83,6 +95,8 @@ public class Survey extends DomainEntity implements Serializable {
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
 	}
+
+	//Indica si es de censo abierto o cerrado, 1 censo abierto 0 censo cerrado
 
 	public Integer getCensus() {
 		return census;
@@ -96,6 +110,8 @@ public class Survey extends DomainEntity implements Serializable {
 	private Collection<Question> questions;
 	private String usernameCreator;
 
+	//Asociación con la clase entidad userNameControl
+
 	public String getUsernameCreator() {
 		return usernameCreator;
 	}
@@ -103,6 +119,8 @@ public class Survey extends DomainEntity implements Serializable {
 	public void setUsernameCreator(String usernameCreator) {
 		this.usernameCreator = usernameCreator;
 	}
+
+	//Asociación con la clase entidad questions
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@NotEmpty
@@ -122,6 +140,8 @@ public class Survey extends DomainEntity implements Serializable {
 		questions.remove(q);
 	}
 
+	//Método toString para la representación del la entidad Survey
+	
 	@Override
 	public String toString() {
 		return "Survey [title=" + title + ", description=" + description
