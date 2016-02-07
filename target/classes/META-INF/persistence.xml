@@ -16,7 +16,7 @@
 	
 	<persistence-unit name="CreacionAdminVotaciones">
 
-		<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />

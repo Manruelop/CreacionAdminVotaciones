@@ -17,10 +17,7 @@ public class QuestionService extends DomainEntity{
 	private QuestionRepository questionRepository;
 
 	//Methods
-<<<<<<< HEAD
-=======
 	//Creación de una question, a la que le pasamos la id del survey.
->>>>>>> comments
 	public Question create(Integer surveyId){
 		Question o = new Question();
 		o.setSurveyId(surveyId);

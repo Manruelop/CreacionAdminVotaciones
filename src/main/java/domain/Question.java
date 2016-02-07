@@ -2,8 +2,6 @@ package domain;
 
 import javax.persistence.Entity;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 @Entity
 public class Question extends DomainEntity {
 
@@ -13,31 +11,13 @@ public class Question extends DomainEntity {
 
 	public Question() {
 		super();
-<<<<<<< HEAD
 		text = "";
 	}
 
 	// Methods
-	public Question(Survey s) {
-		text = "";
-	}
 
-	@NotBlank
+	// Este atributo indica el texto que forma la question.
 	public String getText() {
-=======
-		text="";
-	}	
-
-	public Question(Survey s){
-		text="";
-	}
-
-	//Methods
-
-	//Este atributo indica el texto que forma la question.
-
-	public String getText(){
->>>>>>> comments
 		return text;
 	}
 
@@ -53,7 +33,7 @@ public class Question extends DomainEntity {
 		surveyId = id;
 	}
 
-	//Método toString para la representación como cadena de la clase entidad.
+	// Método toString para la representación como cadena de la clase entidad.
 
 	@Override
 	public String toString() {

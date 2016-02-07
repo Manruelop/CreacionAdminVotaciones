@@ -254,7 +254,7 @@ public class SurveyController {
 				a.postKey(String.valueOf(survey.getId()), token);
 				System.out.println(token);
 				// TODO integracion con censo
-
+				
 				// TODO integracion con deliberaciones
 				// $http.get("/Deliberations/customer/createThreadFromVotacion.do?title="+survey.getTitle()+"surveyId="+survey.getId());
 
