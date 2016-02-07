@@ -17,6 +17,10 @@ public class QuestionService extends DomainEntity{
 	private QuestionRepository questionRepository;
 
 	//Methods
+<<<<<<< HEAD
+=======
+	//Creación de una question, a la que le pasamos la id del survey.
+>>>>>>> comments
 	public Question create(Integer surveyId){
 		Question o = new Question();
 		o.setSurveyId(surveyId);
@@ -24,6 +28,7 @@ public class QuestionService extends DomainEntity{
 		return o;
 	}
 
+	//Creación de una question con un texto que le pasamos como parámetro. 
 	public Question create(String question) {
 		Question o = new Question();
 		o.setText(question);
@@ -32,6 +37,8 @@ public class QuestionService extends DomainEntity{
 		return o;
 	}
 
+	
+	//Método que crea y almacena una question, y devuelve la id de dicha question.
 	public int saveAndFlush(Question question) {
 		Assert.notNull(question);
 		Question q2 = questionRepository.saveAndFlush(question);
@@ -39,6 +46,8 @@ public class QuestionService extends DomainEntity{
 		return questionID;
 	}
 
+	//Debuelve un objeto de tipo question cuya id es la id que se le pasa como
+	//parámetro.
 	public Question findOne(int questionId) {
 		return questionRepository.findOne(questionId);
 	}
