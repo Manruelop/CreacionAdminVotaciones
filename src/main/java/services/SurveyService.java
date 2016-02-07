@@ -57,6 +57,9 @@ public class SurveyService {
 		return "User1";
 	}
 
+
+	// Metodo para obtener un survey mediante su id que le enviamos como
+	//parámetro
 	public Survey findOne(int id) {
 		Assert.notNull(id);
 		return surveyRepository.findOne(id);
@@ -69,11 +72,15 @@ public class SurveyService {
 		return res;
 	}
 
+	// Metodo que devuelve una lista de surveys que han sido creados por un usuario
+	//que le pasamos como parámetro.
 	public List<Survey> allCreatedSurveys(String usernameCreator) {
 		List<Survey> res = surveyRepository.allCreatedSurveys(usernameCreator);
 		return res;
 	}
-
+	
+	// Metodo que elimina survey de la base de datos, mediante la id del survey
+	//que le pasamos como parámetro
 	public void delete(int id) {
 		Assert.notNull(id);
 		Date now = new Date(System.currentTimeMillis() - 1000);
@@ -95,11 +102,15 @@ public class SurveyService {
 			return false;
 		}
 	}
-
+	
+	// Metodo que devuelve una colección de todos los survey que persisten en
+	//la base de datos del sistema
 	public Collection<Survey> allSurveys() {
 		return surveyRepository.findAll();
 	}
 
+	// Metodo que devuelve un survey una vez que ha sido creado dentro de
+	//dicho metodo
 	public Survey create() {
 		Survey result;
 		result = new Survey();
@@ -108,6 +119,9 @@ public class SurveyService {
 		return result;
 	}
 
+	// Metodo que recupera un survey y le modifica la colección de question
+	// añadiendole una nueva question, que se recupera mediante la id
+	//que se le pasa por parámetro.
 	public void saveAddQuestion(int id, int questionId, boolean esFinal) {
 		Survey survey = surveyRepository.findOne(id);
 		Collection<Question> questions = survey.getQuestions();
@@ -121,6 +135,7 @@ public class SurveyService {
 		}
 	}
 
+	// Metodo que persiste una survey en la base de datos.
 	public void saveFinal(Survey survey) {
 		Assert.notNull(survey);
 		surveyRepository.saveAndFlush(survey);
