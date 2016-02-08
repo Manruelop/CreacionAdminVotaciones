@@ -81,15 +81,11 @@ public class Survey extends DomainEntity implements Serializable {
 	// con @DateTimeFormat especificamos el formato para la fecha que se va a
 	// almacenar en la base de datos del sistema.
 
-<<<<<<< HEAD
 	/**
 	 * 
 	 * @return Este metodo devuelve la fecha de inicio de la votación.
 	 */
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-=======
 	@DateTimeFormat(pattern = "dd/MM/yyyy")
->>>>>>> 58dd6877a4587d7679e731bce98690d8e834241e
 	public Date getStartDate() {
 		return startDate;
 	}

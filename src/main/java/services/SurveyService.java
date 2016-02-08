@@ -67,7 +67,7 @@ public class SurveyService {
 	 * método a devolver siempre una idea estática para que por lo menos no se pierda la traza del conjunto. 
 	 */
 	private Integer getIdCensusFromOtherSubsystem(Survey survey) {
-		return 1;
+		return 7;
 	}
 
 
@@ -167,7 +167,6 @@ public class SurveyService {
 	// Metodo que recupera un survey y le modifica la colección de question
 	// añadiendole una nueva question, que se recupera mediante la id
 	//que se le pasa por parámetro.
-<<<<<<< HEAD
 	/**
 	 * 
 	 * @param id hace referencia al identificador de un Survey (Votación).
@@ -175,10 +174,7 @@ public class SurveyService {
 	 * @param esFinal hace referencia a una propiedad de tipo Boolean que determina si es la última pregunta para
 	 * añadir al survey (Votación).
 	 */
-	public void saveAddQuestion(int id, int questionId, boolean esFinal) {
-=======
 	public Survey saveAddQuestion(int id, int questionId, boolean esFinal) {
->>>>>>> 58dd6877a4587d7679e731bce98690d8e834241e
 		Survey survey = surveyRepository.findOne(id);
 		Collection<Question> questions = survey.getQuestions();
 		questions.add(questionService.findOne(questionId));
