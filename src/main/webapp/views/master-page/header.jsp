@@ -34,11 +34,13 @@
 							code="master.page.create">
 						</spring:message></a></li>
 
-				<li><a href="ADMCensus"><spring:message
+				<li><a href="../ADMCensus"><spring:message
 							code="master.page.censo">
 						</spring:message></a></li>
 </ul>
 </div>
+</br>
 <a href="?language=en">En</a> | <a href="?language=es">Es</a>
+
 
 
