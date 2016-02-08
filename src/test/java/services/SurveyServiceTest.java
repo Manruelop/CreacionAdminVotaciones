@@ -115,7 +115,10 @@ public class SurveyServiceTest extends AbstractTest{
 		
 		all = surveyService.allFinishedSurveys();
 		
-		System.out.println("***Todas las encuestas finalizadas***");
+		System.out.println("\n\n\n//////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("////////////// Test de mostrar todas las encuestas finalizadas //////////////////");
+		System.out.println("//////////////////////////////////////////////////////////////////////////////////\n");
+	
 		for (Survey i: all){
 			System.out.println(i.getTitle() + " - " + i.getEndDate().toString());
 		}
