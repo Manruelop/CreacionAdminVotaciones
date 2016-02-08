@@ -121,5 +121,17 @@ public class SurveyServiceTest extends AbstractTest{
 		}
 	}
 	
+	@Test
+	public void testsaveQuestion(){
+		
+		Collection<Survey> all;
+		
+		all = surveyService.allFinishedSurveys();
+		
+		System.out.println("***Todas las encuestas finalizadas***");
+		for (Survey i: all){
+			System.out.println(i.getTitle() + " - " + i.getEndDate().toString());
+		}
+	}
 	
 }
