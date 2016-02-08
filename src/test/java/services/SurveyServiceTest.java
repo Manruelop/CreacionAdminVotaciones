@@ -70,8 +70,8 @@ public class SurveyServiceTest extends AbstractTest{
 		endDate= new Date();
 		
 		res = surveyService.create();
-		res.setTitle("Que piensas de las patatas?");
-		res.setDescription("Descripcion de patatas");
+		res.setTitle("Cuestionario prueba");
+		res.setDescription("Descripcion de cuestionerio de pruebas");
 		res.setStartDate(startDate);
 		res.setEndDate(endDate);
 		res.setCensus(7);
@@ -84,7 +84,6 @@ public class SurveyServiceTest extends AbstractTest{
 		System.out.println("/////////////////////////////////////////////////////////////////////////////////\n");
 		
 		System.out.println("La encuesta se ha guardado con éxito");
-		authenticate(null);
 		
 	}
 
