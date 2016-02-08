@@ -30,15 +30,23 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
+ <br/>
+  <br/>
+  <br/>
+ <div class ="centro">
 <form:form action="${actionURL}" modelAttribute="questio">
 
+<fieldset>
+	<legend><spring:message code = "survey.add.question"/></legend>
+	<div class="texto">
+	
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="surveyId" />
 	
 	<spring:message code="survey.title" />: <jstl:out
 		value="${survey.title}"></jstl:out>
-	<br />
+	<br>
 	<spring:message code="survey.description" />: <jstl:out
 		value="${survey.description}"></jstl:out>
 	<br />
@@ -66,14 +74,19 @@
 	</form:label>
 	<form:input path="text" />
 	<form:errors cssClass="error" path="text" />
-	<br />
 	
+	<br>
 	<input type="submit" name="addQuestion"
 		value="<spring:message code="survey.add.question" />" />
-	<br />
+	<br >
 	<input type="submit" name="save"
 		value="<spring:message code="survey.save" />" />&nbsp; 
 	<input type="button" onclick="location.href='vote/cancelSurvey.do?surveyId=${survey.id}'" value="<spring:message code="survey.cancel"/>" />
-			
-
+			</div>
+</fieldset>
 </form:form>
+</div>
+ <br/>
+  <br/>
+  <br/>
+  <br/>

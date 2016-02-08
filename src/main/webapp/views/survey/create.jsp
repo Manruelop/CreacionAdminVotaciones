@@ -1,7 +1,6 @@
 
 
 
-
 <%@page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@taglib prefix="jstl" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -36,15 +35,22 @@
 	    $( "#datepicka" ).datepicker();
 	  });
 </script>
-  
-<form:form action="${actionURL}" modelAttribute="survey">
 
+  <br/>
+  <br/>
+  <br/>
+ <div class ="centro">
+
+<form:form action="${actionURL}" modelAttribute="survey">
+	<fieldset>
+	<legend><spring:message code = "survey.create"/></legend>
+	<div Class="texto">
 	<form:hidden path="id" />
 	<form:hidden path="version" />
 	<form:hidden path="questions" />
 	<br>
-	<form:label path="title">
-		<spring:message code="survey.title" />:
+	<form:label  path="title" size="50">
+		<spring:message  code="survey.title" />:
 	</form:label>
 	<form:input path="title"/>
 	<form:errors cssClass="error" path="title" />
@@ -80,6 +86,7 @@
 	</form:select>
 	<form:errors cssClass="error" path="tipo" />
 	<br />
+	</div>
 	<jstl:if test="${survey.id != 0 and survey.questions.size()>0}">
 		<jstl:forEach var="question" items="${survey.questions}">
     		<label><spring:message code="survey.question"/></label><jstl:out value="${question.text}"/>
@@ -93,5 +100,12 @@
 		value="<spring:message code="survey.cancel" />"
 		onclick="javascript: window.location.replace('vote/list.do');" />
 	<br />
-
+</fieldset>
 </form:form>
+
+
+  </div>
+  <br/>
+  <br/>
+  <br/>
+  <br/>

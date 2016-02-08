@@ -11,7 +11,7 @@
 <%@taglib prefix="display" uri="http://displaytag.sf.net"%>
 
 
-
+<br>
 	<display:table name="surveis" id="row"
 		requestURI="vote/list.do" class="displaytag">
 		<display:column titleKey="survey.details">

@@ -20,6 +20,7 @@
 <jsp:useBean id="date" class="java.util.Date" />
 
 <hr />
+
 <a href="welcome/aboutus.do"> <spring:message
 			code="about.boton" />
 	</a>
