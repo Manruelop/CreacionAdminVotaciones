@@ -13,13 +13,13 @@ import org.apache.http.impl.client.HttpClients;
 public class requestsHttp {
 
 	private String USER_AGENT = "Mozilla/5.0";
-	private String SERVLETURL = "http://localhost:8080/ADMCensus/census/create.do?";
 
 	@SuppressWarnings("deprecation")
-	public Integer generaPeticion(int i, Date date, Date date2, String string, String string2) throws IOException {
-		SERVLETURL = SERVLETURL + "idVotacion=" + Integer.toString(i) + "&fechaInicio=" + date.getDate() + "/"
-				+ date.getMonth() + "/" + (date.getYear()+1900) + "&fechaFin=" + date2.getDate() + "/" + date2.getMonth() + "/" + (date2.getYear()+1900 )+ "&tituloVotacion=" + string + "&tipoVotacion="
-				+ string2;
+	public Integer generaPeticionCenso(int i, Date date, Date date2, String string, String string2) throws IOException {
+		String SERVLETURL = "http://localhost:8080/ADMCensus/census/create.do?idVotacion=" + Integer.toString(i)
+				+ "&fechaInicio=" + date.getDate() + "/" + date.getMonth() + "/" + (date.getYear() + 1900)
+				+ "&fechaFin=" + date2.getDate() + "/" + date2.getMonth() + "/" + (date2.getYear() + 1900)
+				+ "&tituloVotacion=" + string + "&tipoVotacion=" + string2;
 		System.out.println(SERVLETURL);
 		Integer res = 1;
 		CloseableHttpClient httpClient = HttpClients.createDefault();

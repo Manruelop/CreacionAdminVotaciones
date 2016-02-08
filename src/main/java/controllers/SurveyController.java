@@ -253,9 +253,13 @@ public class SurveyController {
 				System.out.println("Id Votacion: " + survey.getId());
 				a.postKey(String.valueOf(survey.getId()), token);
 				System.out.println("Token: " + token);
-				// TODO integracion con censo
-				Integer censoId = httpRequest.generaPeticion(survey.getId(), survey.getStartDate(), survey.getEndDate(),
-						survey.getTitle(), survey.getTipo());
+				// TODO integracion con censo. Falla el metodo que devuelve
+				// censo.
+				Integer censoId = 1;
+				// censoId = httpRequest.generaPeticionCenso(survey.getId(),
+				// survey.getStartDate(), survey.getEndDate(),
+				// survey.getTitle(), survey.getTipo());
+
 				surveyService.addCensus(censoId, s1.getId());
 
 				// TODO integracion con deliberaciones
