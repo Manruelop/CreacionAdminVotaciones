@@ -22,8 +22,6 @@
 		<bean class="converters.StringToSurveyConverter" />
 		<bean class="converters.QuestionToStringConverter" />
 		<bean class="converters.StringToQuestionConverter" />
-		<bean class="converters.CensusToStringConverter" />
-		<bean class="converters.StringToCensusConverter" />
 	</util:list>
 	
 </beans>

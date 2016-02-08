@@ -3,6 +3,9 @@ package controllers;
 import java.util.Collection;
 import java.util.Date;
 
+import main.java.Authority;
+import main.java.AuthorityImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
@@ -13,14 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import services.QuestionService;
+import services.SurveyService;
 import domain.CheckToken;
 import domain.Question;
 import domain.Survey;
-import main.java.Authority;
-import main.java.AuthorityImpl;
-import services.QuestionService;
-import services.SurveyService;
-import services.requestsHttp;
 
 /**
  * @Class SurveyController
@@ -41,7 +41,7 @@ public class SurveyController {
 	@Autowired
 	private QuestionService questionService;
 
-	private requestsHttp httpRequest = new requestsHttp();
+	//private requestsHttp httpRequest = new requestsHttp();
 
 	/**
 	 * @return Constructor del Controlador.
