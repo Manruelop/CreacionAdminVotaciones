@@ -53,7 +53,11 @@ public class QuestionServiceTest extends AbstractTest{
 		question = "¿de que color era el caballo blaco de Santiago?";
 		
 		res = questionService.create(question);
-		System.out.println("***Guardar una pregunta desde un String***");
+
+		System.out.println("\n\n\n/////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("/////////////////////// Test persistir una pregunta desde un String///////////////////////////////////");
+		System.out.println("/////////////////////////////////////////////////////////////////////////////////\n");
+
 		System.out.println(res.getText());
 		
 	}
