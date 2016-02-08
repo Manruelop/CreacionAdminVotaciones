@@ -77,7 +77,7 @@ public class SurveyController {
 	// Creation ------------------------------------------
 	/**
 	 * @return Este método devuelve el modelo de vista para el primer paso de la
-	 *         votacion. El cual consiste en elegir el nombre, la descripciñon,
+	 *         votacion. El cual consiste en elegir el nombre, la descripción,
 	 *         el tipo de censo y el intervalo de fecha de inicio y finalización
 	 *         de la votación.
 	 */
@@ -100,9 +100,9 @@ public class SurveyController {
 	 *            La votación que se ha creado en el primer paso.
 	 * @param bindingResult
 	 *            Este parámetro nos indica si hay algun error con los datos
-	 *            introducidos comparandolos con las restricciones escritas en
+	 *            introducidos comparándolos con las restricciones escritas en
 	 *            el dominio.
-	 * @return Este método comprueba si la votacion es válida y en caso negativo
+	 * @return Este método comprueba si la votación es válida y en caso negativo
 	 *         volvemos a la vista de creación de la votación para poder editar
 	 *         los campos erróneos. En caso afirmativo, procederemos a la
 	 *         siguiente vista la cual es para añadir preguntas a la votación.

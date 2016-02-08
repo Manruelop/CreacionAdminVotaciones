@@ -19,7 +19,7 @@
 	<li>Pablo Sánchez Alonso</li>
 	<li>Manuel Rueda López</li>
 	<li>Juan Jesús Vázquez Rodríguez</li>
-	<li>Alejandro Ballesteros Martin</li>
+	<li>Alejandro Ballesteros Martín</li>
 	</ul>
 	
 <br>
