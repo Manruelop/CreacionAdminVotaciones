@@ -138,4 +138,20 @@ public class SurveyServiceTest extends AbstractTest{
 
 	}
 	
+	@Test
+	public void testallCreatedSurveys(){
+		
+		Collection<Survey> all;
+		
+		all = surveyService.allCreatedSurveys("pepe");
+		
+		System.out.println("\n\n\n//////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("////////////// Test de mostrar todas las encuestas de un usuario //////////////////");
+		System.out.println("//////////////////////////////////////////////////////////////////////////////////\n");
+	
+		for (Survey i: all){
+			System.out.println(i.getTitle() + " - " + i.getEndDate().toString());
+		}
+	}
+	
 }
