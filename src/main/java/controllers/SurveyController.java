@@ -259,12 +259,10 @@ public class SurveyController {
 				// censoId = httpRequest.generaPeticionCenso(survey.getId(),
 				// survey.getStartDate(), survey.getEndDate(),
 				// survey.getTitle(), survey.getTipo());
-
 				surveyService.addCensus(censoId, s1.getId());
 
-				// TODO integracion con deliberaciones
-				// $http.get("/Deliberations/customer/createThreadFromVotacion.do?title="+survey.getTitle()+"surveyId="+survey.getId());
-
+				// TODO integracion con deliberaciones.(Cambiar url de despliegue en el metodo)
+				//httpRequest.generaPeticionDeliberations(survey.getId(), survey.getTitle());
 				result = new ModelAndView("redirect:/vote/list.do");
 			} catch (Throwable oops) {
 				result = new ModelAndView("vote/addQuestion");

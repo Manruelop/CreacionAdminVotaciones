@@ -43,11 +43,41 @@ public class requestsHttp {
 		reader.close();
 
 		// print result
-		String aux = response.toString();
 		System.out.println("Respuesta: " + response.toString());
 		httpClient.close();
 		SERVLETURL = "http://localhost:8080/ADMCensus/census/create.do?";
 		return res;
 
+	}
+
+	public void generaPeticionDeliberations(int id, String title) throws IOException {
+		//TODO Cambiar URL por URL de despliegue(a 08/02/2016 no tengo costancia de que hayan desplegado).
+		String SERVLETURL = "localhost:8080//Deliberations/customer/createThreadFromVotacion.do?title="+title+"&id="+id;
+		System.out.println(SERVLETURL);
+		CloseableHttpClient httpClient = HttpClients.createDefault();
+		System.out.println("Creo el httpclient");
+		HttpGet httpGet = new HttpGet(SERVLETURL);
+		System.out.println("Creo el httpclient");
+		httpGet.addHeader("User-Agent", USER_AGENT);
+		System.out.println("Voy a ejecutar");
+		CloseableHttpResponse httpResponse = httpClient.execute(httpGet);
+		System.out.println("Ejecutado");
+		System.out.println("GET Response Status:: " + httpResponse.getStatusLine().getStatusCode());
+
+		BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent()));
+
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = reader.readLine()) != null) {
+			response.append(inputLine.toString());
+		}
+		reader.close();
+
+		// print result
+		System.out.println("Respuesta: " + response.toString());
+		httpClient.close();
+		SERVLETURL = "http://localhost:8080/ADMCensus/census/create.do?";
+		
 	}
 }
