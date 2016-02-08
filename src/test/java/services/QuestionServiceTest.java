@@ -36,7 +36,11 @@ public class QuestionServiceTest extends AbstractTest{
 		Question res;
 		
 		res = questionService.findOne(2);
-		System.out.println("***Find one***");
+
+		System.out.println("\n\n\n/////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("///////////////////////////// Test find one /////////////////////////////////////////");
+		System.out.println("/////////////////////////////////////////////////////////////////////////////////\n");
+
 		System.out.println(res.getText());
 		
 	}
@@ -49,7 +53,11 @@ public class QuestionServiceTest extends AbstractTest{
 		question = "¿de que color era el caballo blaco de Santiago?";
 		
 		res = questionService.create(question);
-		System.out.println("***Guardar una pregunta desde un String***");
+
+		System.out.println("\n\n\n/////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("/////////////////////// Test persistir una pregunta desde un String///////////////////////////////////");
+		System.out.println("/////////////////////////////////////////////////////////////////////////////////\n");
+
 		System.out.println(res.getText());
 		
 	}

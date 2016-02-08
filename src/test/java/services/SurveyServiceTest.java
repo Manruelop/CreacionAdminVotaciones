@@ -41,7 +41,9 @@ public class SurveyServiceTest extends AbstractTest{
 		Survey res;
 		
 		res = surveyService.findOne(1);
-		System.out.println("***Find one***");
+		System.out.println("\n\n\n/////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("///////////////////////////// Test find one /////////////////////////////////////////");
+		System.out.println("/////////////////////////////////////////////////////////////////////////////////\n");
 		System.out.println(res.getTitle());
 		
 	}
@@ -52,11 +54,10 @@ public class SurveyServiceTest extends AbstractTest{
 		res = surveyService.create();
 		
 		System.out.println("\n\n\n///////////////////////////////////////////////////////////////////////");
-		System.out.println("////////////// Test de Creación de un Objeto Comment //////////////////");
+		System.out.println("////////////// Test de Creación de un Objeto Survey //////////////////");
 		System.out.println("///////////////////////////////////////////////////////////////////////\n");
 		
 		System.out.println(res);
-		authenticate(null);
 	}
 	
 	@Test
@@ -68,9 +69,10 @@ public class SurveyServiceTest extends AbstractTest{
 		startDate= new Date();
 		endDate= new Date();
 		
+		
 		res = surveyService.create();
-		res.setTitle("Que piensas de las patatas?");
-		res.setDescription("Descripcion de patatas");
+		res.setTitle("Cuestionario prueba");
+		res.setDescription("Descripcion de cuestionerio de pruebas");
 		res.setStartDate(startDate);
 		res.setEndDate(endDate);
 		res.setCensus(7);
@@ -83,7 +85,6 @@ public class SurveyServiceTest extends AbstractTest{
 		System.out.println("/////////////////////////////////////////////////////////////////////////////////\n");
 		
 		System.out.println("La encuesta se ha guardado con éxito");
-		authenticate(null);
 		
 	}
 
@@ -101,7 +102,6 @@ public class SurveyServiceTest extends AbstractTest{
 		System.out.println("//////////////////////////////////////////////////////////////////////////////////\n");
 		
 		System.out.println("La encuesta se ha eliminado con éxito");
-		authenticate(null);
 	}
 	
 	
@@ -115,7 +115,10 @@ public class SurveyServiceTest extends AbstractTest{
 		
 		all = surveyService.allFinishedSurveys();
 		
-		System.out.println("***Todas las encuestas finalizadas***");
+		System.out.println("\n\n\n//////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("////////////// Test de mostrar todas las encuestas finalizadas //////////////////");
+		System.out.println("//////////////////////////////////////////////////////////////////////////////////\n");
+	
 		for (Survey i: all){
 			System.out.println(i.getTitle() + " - " + i.getEndDate().toString());
 		}
@@ -124,11 +127,28 @@ public class SurveyServiceTest extends AbstractTest{
 	@Test
 	public void testsaveQuestion(){
 		
+		
+		surveyService.saveAddQuestion(1, 3, false);
+		
+		System.out.println("\n\n\n//////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("////////////// Test añadir a una encuesta una pregunta //////////////////");
+		System.out.println("//////////////////////////////////////////////////////////////////////////////////\n");
+		
+		System.out.println("La pregunta se ha añadido con exito");
+
+	}
+	
+	@Test
+	public void testallCreatedSurveys(){
+		
 		Collection<Survey> all;
 		
-		all = surveyService.allFinishedSurveys();
+		all = surveyService.allCreatedSurveys("pepe");
 		
-		System.out.println("***Todas las encuestas finalizadas***");
+		System.out.println("\n\n\n//////////////////////////////////////////////////////////////////////////////////");
+		System.out.println("////////////// Test de mostrar todas las encuestas de un usuario //////////////////");
+		System.out.println("//////////////////////////////////////////////////////////////////////////////////\n");
+	
 		for (Survey i: all){
 			System.out.println(i.getTitle() + " - " + i.getEndDate().toString());
 		}
