@@ -54,11 +54,10 @@ public class SurveyServiceTest extends AbstractTest{
 		res = surveyService.create();
 		
 		System.out.println("\n\n\n///////////////////////////////////////////////////////////////////////");
-		System.out.println("////////////// Test de Creación de un Objeto Comment //////////////////");
+		System.out.println("////////////// Test de Creación de un Objeto Survey //////////////////");
 		System.out.println("///////////////////////////////////////////////////////////////////////\n");
 		
 		System.out.println(res);
-		authenticate(null);
 	}
 	
 	@Test
