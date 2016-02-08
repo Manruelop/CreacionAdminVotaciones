@@ -33,7 +33,7 @@ public class SurveyService {
 	 * @return Este metodo devuelve devuelve un objeto de tipo Int que contiene la id del Survey creado.
 	 */
 	@Transactional
-	public Integer save(Survey s) {
+	public Integer save(Survey s,String user) {
 		Assert.notNull(s);
 		Date now = new Date(System.currentTimeMillis() - 1000);
 		if (s.getStartDate() == null || s.getEndDate() == null || s.getTitle() == "" || s.getTipo() == null) {
@@ -46,13 +46,11 @@ public class SurveyService {
 			throw new IllegalArgumentException("End must be future than start");
 		}
 		// CAMBIAR POR EL USUARIO LOGEADO Y CENSO POR LA ID DEL CENSO
-		String userName = "test1";
-		s.setUsernameCreator(userName);
 
 		// Se le pone 0 temporalmente. Cuando guardamos despues de crear
 		// las preguntas entonces establecemos la conexion con ceso
 		s.setCensus(0);
-
+		s.setUsernameCreator(user);
 		Survey s1 = surveyRepository.saveAndFlush(s);
 		return s1.getId();
 

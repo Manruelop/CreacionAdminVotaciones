@@ -65,6 +65,7 @@ public class SurveyServiceTest extends AbstractTest{
 		Survey res;
 		Date startDate;
 		Date endDate;
+		String user ="";
 		
 		startDate= new Date();
 		endDate= new Date();
@@ -78,7 +79,7 @@ public class SurveyServiceTest extends AbstractTest{
 		res.setCensus(7);
 		res.setTipo("Cuestionario");;
 		
-		surveyService.save(res);
+		surveyService.save(res,user);
 		
 		System.out.println("\n\n\n/////////////////////////////////////////////////////////////////////////////////");
 		System.out.println("////////////// Test de guardar una encuesta de forma persistente //////////////////");

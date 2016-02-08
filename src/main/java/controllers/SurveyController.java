@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,14 +58,16 @@ public class SurveyController {
 	 *         votaciones.
 	 */
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public ModelAndView list() {
+	public ModelAndView list(@CookieValue("user") String user) {
 		ModelAndView result;
+		System.out.println(user);
 		Collection<Survey> surveis;
 		// if(user == null){
 
 		// surveis = surveyService.allSurveys();
 		// }else{
-		surveis = surveyService.allCreatedSurveys("Test1");
+		surveis = surveyService.allCreatedSurveys(user);
+		System.out.println( surveis);
 		// }
 		Date now = new Date(System.currentTimeMillis() - 1000);
 		result = new ModelAndView("vote/list");
@@ -85,7 +88,7 @@ public class SurveyController {
 	public ModelAndView create() {
 		ModelAndView result;
 		Survey survey;
-
+		
 		survey = surveyService.create();
 
 		result = new ModelAndView("vote/create");
@@ -108,7 +111,7 @@ public class SurveyController {
 	 *         siguiente vista la cual es para añadir preguntas a la votación.
 	 */
 	@RequestMapping(value = "/create", method = RequestMethod.POST, params = "addQuestion")
-	public ModelAndView addQuestio(Survey survey, BindingResult bindingResult) {
+	public ModelAndView addQuestio(@CookieValue("user") String user,Survey survey, BindingResult bindingResult) {
 		ModelAndView result;
 		Assert.notNull(survey);
 		Date now = new Date(System.currentTimeMillis() - 1000);
@@ -133,7 +136,7 @@ public class SurveyController {
 			}
 		} else {
 			try {
-				Integer s2 = surveyService.save(survey);
+				Integer s2 = surveyService.save(survey,user);
 				result = new ModelAndView("redirect:/vote/addQuestion.do");
 				result.addObject("surveyId", s2);
 			} catch (Throwable oops) {
