@@ -16,7 +16,7 @@ public class requestsHttp {
 
 	@SuppressWarnings("deprecation")
 	public Integer generaPeticionCenso(int i, Date date, Date date2, String string, String string2) throws IOException {
-		String SERVLETURL = "http://localhost:8080/ADMCensus/census/create.do?idVotacion=" + Integer.toString(i)
+		String SERVLETURL = "http://localhost:80/ADMCensus/census/create.do?idVotacion=" + Integer.toString(i)
 				+ "&fechaInicio=" + date.getDate() + "/" + date.getMonth() + "/" + (date.getYear() + 1900)
 				+ "&fechaFin=" + date2.getDate() + "/" + date2.getMonth() + "/" + (date2.getYear() + 1900)
 				+ "&tituloVotacion=" + string + "&tipoVotacion=" + string2;
@@ -45,14 +45,14 @@ public class requestsHttp {
 		// print result
 		System.out.println("Respuesta: " + response.toString());
 		httpClient.close();
-		SERVLETURL = "http://localhost:8080/ADMCensus/census/create.do?";
+		SERVLETURL = "http://localhost:80/ADMCensus/census/create.do?";
 		return res;
 
 	}
 
 	public void generaPeticionDeliberations(int id, String title) throws IOException {
-		//TODO Cambiar URL por URL de despliegue(a 08/02/2016 no tengo costancia de que hayan desplegado).
-		String SERVLETURL = "localhost:8080//Deliberations/customer/createThreadFromVotacion.do?title="+title+"&id="+id;
+		//TODO Cambiar URL por URL de despliegue.
+		String SERVLETURL = "localhost:80//Deliberations/customer/createThreadFromVotacion.do?title="+title+"&id="+id;
 		System.out.println(SERVLETURL);
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		System.out.println("Creo el httpclient");
@@ -74,10 +74,8 @@ public class requestsHttp {
 		}
 		reader.close();
 
-		// print result
-		System.out.println("Respuesta: " + response.toString());
 		httpClient.close();
-		SERVLETURL = "http://localhost:8080/ADMCensus/census/create.do?";
+		SERVLETURL = "localhost:80//Deliberations/customer/createThreadFromVotacion.do?";
 		
 	}
 }

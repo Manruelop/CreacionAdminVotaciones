@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import services.QuestionService;
 import services.SurveyService;
+import services.requestsHttp;
 import domain.CheckToken;
 import domain.Question;
 import domain.Survey;
@@ -42,7 +43,7 @@ public class SurveyController {
 	@Autowired
 	private QuestionService questionService;
 
-	//private requestsHttp httpRequest = new requestsHttp();
+//	private requestsHttp httpRequest = new requestsHttp();
 
 	/**
 	 * @return Constructor del Controlador.
@@ -62,13 +63,8 @@ public class SurveyController {
 		ModelAndView result;
 		System.out.println(user);
 		Collection<Survey> surveis;
-		// if(user == null){
-
-		// surveis = surveyService.allSurveys();
-		// }else{
 		surveis = surveyService.allCreatedSurveys(user);
 		System.out.println( surveis);
-		// }
 		Date now = new Date(System.currentTimeMillis() - 1000);
 		result = new ModelAndView("vote/list");
 		result.addObject("surveis", surveis);
@@ -196,11 +192,14 @@ public class SurveyController {
 		ModelAndView result;
 		Assert.notNull(questio);
 		Survey survey = surveyService.findOne(questio.getSurveyId());
-		if (bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()||questio.getText() == "") {
 			result = new ModelAndView("vote/addQuestion");
 			result.addObject("actionURL", "vote/addQuestion.do");
 			result.addObject("surveyId", survey.getId());
 			result.addObject("questio", questio);
+			if(questio.getText() == ""){
+			result.addObject("message","survey.fields.empty");
+			}
 		} else {
 			try {
 				int idQuestion = questionService.saveAndFlush(questio);
@@ -217,6 +216,9 @@ public class SurveyController {
 				result.addObject("actionURL", "vote/addQuestion.do");
 				result.addObject("survey", survey.getId());
 				result.addObject("questio", questio);
+				if(questio.getText() == ""){
+					result.addObject("message","survey.fields.empty");
+					}
 			}
 		}
 		return result;
@@ -241,11 +243,14 @@ public class SurveyController {
 		ModelAndView result;
 		Assert.notNull(questio);
 		Survey survey = surveyService.findOne(questio.getSurveyId());
-		if (bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()|| questio.getText() == "") {
 			result = new ModelAndView("vote/addQuestion");
 			result.addObject("actionURL", "vote/addQuestion.do");
 			result.addObject("survey", survey.getId());
 			result.addObject("questio", questio);
+			if(questio.getText() == ""){
+				result.addObject("message","survey.fields.empty");
+				}
 		} else {
 			try {
 				int idQuestion = questionService.saveAndFlush(questio);
@@ -265,7 +270,7 @@ public class SurveyController {
 				surveyService.addCensus(censoId, s1.getId());
 
 				// TODO integracion con deliberaciones.(Cambiar url de despliegue en el metodo)
-				//httpRequest.generaPeticionDeliberations(survey.getId(), survey.getTitle());
+//				httpRequest.generaPeticionDeliberations(survey.getId(), survey.getTitle());
 				result = new ModelAndView("redirect:/vote/list.do");
 			} catch (Throwable oops) {
 				result = new ModelAndView("vote/addQuestion");
@@ -273,6 +278,9 @@ public class SurveyController {
 				result.addObject("actionURL", "vote/addQuestion.do");
 				result.addObject("survey", survey);
 				result.addObject("questio", questio);
+				if(questio.getText() == ""){
+					result.addObject("message","survey.fields.empty");
+					}
 			}
 		}
 		return result;
